@@ -46,7 +46,7 @@ WAF can control how API Gateway, Amazon CloudFront or an Application Load Balanc
 
 <br>
 <br>
-##Protects from:
+### Protects from:
 <br>
 * Cross-site scription
 * Source IP
@@ -55,6 +55,9 @@ WAF can control how API Gateway, Amazon CloudFront or an Application Load Balanc
 * SQL injection
 * Headers and query strings
 
+<br>
+<br>
+<br>
 ## VPC Flow Logs
 <br>
 <br>
