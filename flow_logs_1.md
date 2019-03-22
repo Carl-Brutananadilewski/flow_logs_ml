@@ -82,3 +82,26 @@ WAF can control how API Gateway, Amazon CloudFront or an Application Load Balanc
  <br>
  <br>
  <br>
+
+## AWS SageMaker
+<br>
+<br>
+Amazon SageMaker is a fully managed machine learning service.
+<br>
+<br>
+<br>
+<p align="center">
+  <img src="images/04-sagemaker-architecture.png">
+</p>
+<br>
+<br>
+<br>
+
+### Jupyter Notebook
+
+<br>
+<br>
+
+Notebook documents are documents that contain both computer code (e.g. python) and rich text elements (paragraph, equations, figures, links, etc…). Notebook documents are both human-readable documents containing the analysis description and the results (figures, tables, etc..) as well as executable documents which can be run to perform data analysis.
+
+https://github.com/Carl-Brutananadilewski/flow_logs_ml/blob/master/sm-notebook.ipynb
