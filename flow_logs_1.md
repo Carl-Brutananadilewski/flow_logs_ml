@@ -4,10 +4,7 @@
 <br>
 <br>
 <br>
-<br>
-<br>
-<br>
-<br>
+
 
 
 <p align="center">
@@ -18,10 +15,7 @@
 <br>
 <br>
 <br>
-<br>
-<br>
-<br>
-<br>
+
 
 
 <p align="center">
@@ -32,10 +26,7 @@
 <br>
 <br>
 <br>
-<br>
-<br>
-<br>
-<br>
+
 
 ## Web Application Firewall
 
