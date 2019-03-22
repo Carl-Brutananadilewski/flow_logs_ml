@@ -50,6 +50,7 @@ WAF can control how API Gateway, Amazon CloudFront or an Application Load Balanc
 ### Protects from
 
 <br>
+
 * Cross-site scription
 * Source IP
 * Geo Location
@@ -139,16 +140,20 @@ Notebook documents are documents that contain both computer code (e.g. python) a
 <br>
 <br>
 Random Cut Forest notebook:
+
 https://github.com/awslabs/amazon-sagemaker-examples/blob/master/introduction_to_amazon_algorithms/random_cut_forest/random_cut_forest.ipynb
 <br>
 Using SageMaker Random Cut Forests to detect anomalies in VPC Flow Logs notebook:
+
 https://github.com/Carl-Brutananadilewski/flow_logs_ml/blob/master/sm-notebook.ipynb
 <br>
 
 <br>
 <br>
 <br>
+
 ## Infrastructure overview
+
 <br>
 <br>
 <br>
