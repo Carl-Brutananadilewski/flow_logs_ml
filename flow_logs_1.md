@@ -42,13 +42,6 @@
 <br>
 <br>
 
-<p align="center">
-  <img src="images/03_waf_logo.png">
-</p>
-
-<br>
-<br>
-
 WAF can control how API Gateway, Amazon CloudFront or an Application Load Balancer responds to web requests.
 
 <br>
@@ -63,3 +56,10 @@ WAF can control how API Gateway, Amazon CloudFront or an Application Load Balanc
 * Headers and query strings
 
 ## VPC Flow Logs
+<br>
+<br>
+ Feature that enables you to capture information about the IP traffic going to and from network interfaces in your VPC
+
+ <p align="center">
+   <img src="images/03_flowlogs.jpeg">
+ </p>
