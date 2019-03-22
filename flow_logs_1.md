@@ -22,9 +22,44 @@
 <br>
 <br>
 <br>
-<br>
 
 
 <p align="center">
-  <img src="images/01_with_waf.png">
+  <img src="images/02_with_waf.png">
 </p>
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+## Web Application Firewall
+
+<br>
+<br>
+
+<p align="center">
+  <img src="images/03_waf_logo.png">
+</p>
+
+<br>
+<br>
+
+WAF can control how API Gateway, Amazon CloudFront or an Application Load Balancer responds to web requests.
+
+<br>
+<br>
+##Protects from:
+<br>
+* Cross-site scription
+* Source IP
+* Geo Location
+* Query string
+* SQL injection
+* Headers and query strings
+
+## VPC Flow Logs
