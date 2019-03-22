@@ -60,6 +60,25 @@ WAF can control how API Gateway, Amazon CloudFront or an Application Load Balanc
 <br>
  Feature that enables you to capture information about the IP traffic going to and from network interfaces in your VPC
 
+ <br>
+ <br>
+ <br>
+
+* Stores logs in CloudWatch
+* Can be enabled on:
+  * Network interface
+  * Subnet
+  * VPC
+* Each network interface has unique log stream
+
+ <br>
+ <br>
+ <br>
+
  <p align="center">
    <img src="images/03_flowlogs.jpeg">
  </p>
+
+ <br>
+ <br>
+ <br>
