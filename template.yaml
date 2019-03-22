@@ -1,0 +1,131 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description:
+  Creates a stack for NET319. Web, Kinesis Firehose, Website, and ML Inference.
+Parameters: 
+  Ec2KeyPair: 
+    Description: Amazon EC2 Key Pair
+    Type: "AWS::EC2::KeyPair::KeyName"
+  kdgUsername: 
+    Description: Username to Data Generator
+    Type: "String"
+    Default: "traffic-generator-user"
+  kdgPassword: 
+    Description: Password to Data Generator
+    Type: "String"
+    NoEcho: true
+    Default: "trafficgeneratorpassword2018"
+Metadata:
+  'AWS::CloudFormation::Interface':
+    ParameterGroups:
+      - Label:
+          default: EC2 KeyPair (must exist)
+        Parameters:
+          - Ec2KeyPair
+Mappings: 
+    RegionMap: 
+        us-east-1: 
+          AmazonLinux64: "ami-0ff8a91507f77f867"
+          s3Artifacts: "net319-reinvent-2018-use1.s3.amazonaws.com"
+          webArtifacts: "net319-reinvent2018.info"
+        us-west-2: 
+          AmazonLinux64: "ami-a0cfeed8"
+          s3Artifacts: "net319-reinvent-2018-usw2.s3.us-west-2.amazonaws.com"
+          webArtifacts: "net319-reinvent2018.info"
+        eu-west-1: 
+          AmazonLinux64: "ami-047bb4163c506cd98"
+          s3Artifacts: "net319-reinvent-2018-euw1.s3.eu-west-1.amazonaws.com"
+          webArtifacts: "net319-reinvent2018.info"
+        us-east-2: 
+          AmazonLinux64: "ami-0b59bfac6be064b78"
+          s3Artifacts: "net319-reinvent-2018-use2.s3.us-east-2.amazonaws.com"
+          webArtifacts: "net319-reinvent2018.info"
+Resources:
+  webStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+        Parameters: 
+            myKeyPair: !Ref Ec2KeyPair
+            myAMI: !FindInMap [ RegionMap, !Ref "AWS::Region", AmazonLinux64 ]
+            webArtifacts: !FindInMap [ RegionMap, !Ref "AWS::Region", webArtifacts ]
+        TemplateURL:
+            !Sub
+                - "https://${s3uri}/cfn/web-stack.yaml"
+                - { s3uri: !FindInMap [ RegionMap, !Ref "AWS::Region", s3Artifacts ] }
+        TimeoutInMinutes: '60'
+  mlStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+        Parameters: 
+            s3Artifacts: !Select [ 0, !Split [ ".", !FindInMap [ RegionMap, !Ref "AWS::Region", s3Artifacts ] ] ]
+            s3DestBucket: !Sub "vpc-flowlogs-analytics-${AWS::AccountId}-${AWS::Region}"
+        TemplateURL:
+            !Sub
+                - "https://${s3uri}/cfn/ml-s3-stack.yaml"
+                - { s3uri: !FindInMap [ RegionMap, !Ref "AWS::Region", s3Artifacts ] }
+        TimeoutInMinutes: '60'
+  kfhStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+        Parameters: 
+            VPCID: !GetAtt webStack.Outputs.VPCID
+            VPCFLBucketName: !GetAtt mlStack.Outputs.VPCFLBucketName
+            s3Artifacts: !Select [ 0, !Split [ ".", !FindInMap [ RegionMap, !Ref "AWS::Region", s3Artifacts ] ] ]
+        TemplateURL:
+            !Sub
+                - "https://${s3uri}/cfn/kfh-stack.yaml"
+                - { s3uri: !FindInMap [ RegionMap, !Ref "AWS::Region", s3Artifacts ] }
+        TimeoutInMinutes: '60'
+  kdgStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+        Parameters:
+            s3Artifacts: !Select [ 0, !Split [ ".", !FindInMap [ RegionMap, !Ref "AWS::Region", s3Artifacts ] ] ] 
+            Username:
+                Ref: kdgUsername
+            Password:
+                Ref: kdgPassword
+        TemplateURL:
+            !Sub
+                - "https://${s3uri}/cfn/kdg-stack.yaml"
+                - { s3uri: !FindInMap [ RegionMap, !Ref "AWS::Region", s3Artifacts ] }
+        TimeoutInMinutes: '60'
+  wafLambdaStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+        Parameters:
+            s3Artifacts: !Select [ 0, !Split [ ".", !FindInMap [ RegionMap, !Ref "AWS::Region", s3Artifacts ] ] ] 
+            WAFBlackListIPSet: !GetAtt webStack.Outputs.WAFBlackListIPSet
+            WAFRateLimitIPSet: !GetAtt webStack.Outputs.WAFRateLimitIPSet
+            WAFCountIPSet: !GetAtt webStack.Outputs.WAFCountIPSet
+        TemplateURL:
+            !Sub
+                - "https://${s3uri}/cfn/waf-lambda-stack.yaml"
+                - { s3uri: !FindInMap [ RegionMap, !Ref "AWS::Region", s3Artifacts ] }
+        TimeoutInMinutes: '60'
+Outputs:
+  LoadBalancerDNSName:
+    Description: The DNS Name of the Website load balancer
+    Value:
+        !Sub
+            - "http://${fqdn}/"
+            - fqdn: !GetAtt webStack.Outputs.LoadBalancerDNSName
+  KDGLink:
+    Description: The link for the Traffic Generator
+    Value: !GetAtt kdgStack.Outputs.KinesisDataGeneratorUrl
+  KDGUsername:
+    Description: The username for the Traffic Generator
+    Value:
+        Ref: kdgUsername
+  KDGPassword:
+    Description: The password for the Traffic Generator
+    Value:
+        Ref: kdgPassword
+  VPCFlowLogsBucketName:
+    Description: The URL to reach the WAF Blacklist API
+    Value: !GetAtt mlStack.Outputs.VPCFLBucketName
+  WAFAPI:
+    Description: The URL to reach the WAF Blacklist API
+    Value: !GetAtt wafLambdaStack.Outputs.APIGatewayURL
+  AWSAccountNumber:
+    Description: The AWS Account number used for this stack
+    Value: !Ref "AWS::AccountId"
