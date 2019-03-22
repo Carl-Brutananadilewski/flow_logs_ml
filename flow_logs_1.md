@@ -46,7 +46,9 @@ WAF can control how API Gateway, Amazon CloudFront or an Application Load Balanc
 
 <br>
 <br>
-### Protects from:
+
+### Protects from
+
 <br>
 * Cross-site scription
 * Source IP
@@ -58,7 +60,9 @@ WAF can control how API Gateway, Amazon CloudFront or an Application Load Balanc
 <br>
 <br>
 <br>
+
 ## VPC Flow Logs
+
 <br>
 <br>
  Feature that enables you to capture information about the IP traffic going to and from network interfaces in your VPC
@@ -144,7 +148,7 @@ https://github.com/Carl-Brutananadilewski/flow_logs_ml/blob/master/sm-notebook.i
 <br>
 <br>
 <br>
-##Infrastructure overview
+## Infrastructure overview
 <br>
 <br>
 <br>
